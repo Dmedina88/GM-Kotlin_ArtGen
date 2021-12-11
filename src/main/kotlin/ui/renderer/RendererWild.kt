@@ -1,0 +1,110 @@
+package ui.renderer
+
+import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.ImageComposeScene
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asDesktopBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import data.Config
+import data.Folders
+import data.configTest
+import org.jetbrains.skia.Image
+import util.bitmapToFile
+import util.imageFromFile
+import util.scaleOnMaxHight
+import java.awt.Dimension
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.math.absoluteValue
+import kotlin.random.Random
+
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+@Preview()
+fun rendererWild(configTest: Config) {
+
+  val image =  ImageComposeScene(2000, 1000) {
+        Canvas(Modifier.fillMaxSize()) {
+            val directory = File(Folders.SKY.path)
+            //todo null safty
+            val file = directory.listFiles().random()
+            //  Log.debug(file.name)
+            print(file.name)
+            val random = File(Folders.LANDTRAITS.path).listFiles().random()
+            //  Log.debug(file.name)
+            print(random.name)
+            val bitmap = imageFromFile(file)
+
+//backgorund
+            val background = imageFromFile(File(Folders.BACKGROUND.path).listFiles().random())
+
+            this.drawImage(background, dstSize = IntSize(this.size.width.toInt(), (this.size.height).toInt()))
+            this.drawImage(
+                bitmap,
+                IntOffset(100, 100),
+                dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
+            )
+
+
+            //   this.drawImage(randomBitmap,Offset(599f,600f))
+            //   this.drawImage(randomBitmap,dstOffset = IntOffset(599,600), dstSize = IntSize(20,200))
+            val rand = Random(LocalDateTime.now().nano)
+
+
+
+
+            Folders.values().forEach {
+                println(it.path)
+                File(it.path).listFiles().forEach {
+                    if (it != null && it.name.endsWith(".png")) {
+                        println(it.name)
+
+                        var newBitmap = imageFromFile(it)
+
+                        this.drawImage(
+                            newBitmap,
+                            dstOffset = IntOffset(
+                                rand.nextInt((this.size.width.toInt() - newBitmap.width).absoluteValue),
+                                rand.nextInt(this.size.height.toInt())
+                            ),
+                            dstSize = newBitmap.scaleOnMaxHight(200)
+                        )
+                    }
+
+                }
+
+                //  bitmapToFile(bitmap.asDesktopBitmap())
+            }
+
+
+        }
+
+
+
+    }.render()
+    
+    Canvas(Modifier.fillMaxSize()) {
+        drawImage(image.toComposeImageBitmap())
+    }
+
+
+    LaunchedEffect("COOL"){
+        bitmapToFile(image)
+
+    }
+}
