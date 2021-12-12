@@ -19,7 +19,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import data.Config
 import data.Folders
-import data.configTest
 import org.jetbrains.skia.Image
 import util.bitmapToFile
 import util.imageFromFile
@@ -70,19 +69,19 @@ fun rendererWild(configTest: Config) {
 
             Folders.values().forEach {
                 println(it.path)
-                File(it.path).listFiles().forEach {
+                File(it.path).listFiles().apply { this.shuffle() }.forEach {
                     if (it != null && it.name.endsWith(".png")) {
                         println(it.name)
 
                         var newBitmap = imageFromFile(it)
-
+ val size = newBitmap.scaleOnMaxHight(200)
                         this.drawImage(
                             newBitmap,
                             dstOffset = IntOffset(
-                                rand.nextInt((this.size.width.toInt() - newBitmap.width).absoluteValue),
-                                rand.nextInt(this.size.height.toInt())
+                                rand.nextInt(this.size.width.toInt() - size.width).absoluteValue,
+                                rand.nextInt(this.size.height.toInt() - size.height).absoluteValue
                             ),
-                            dstSize = newBitmap.scaleOnMaxHight(200)
+                            dstSize = size
                         )
                     }
 

@@ -18,9 +18,10 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import data.Config
 import data.Folders
-import data.configTest
+import data.configs.configTest
 import org.jetbrains.skia.Image
 import ui.renderer.rendererWild
+import ui.renderer.workGen1
 import util.bitmapToFile
 import java.awt.Dimension
 import java.io.File
@@ -36,10 +37,10 @@ fun main() = application {
    Window(onCloseRequest = ::exitApplication) {
         this.window.size = Dimension(2000, 1000)
         this.window.isResizable = false
-      // (1..10).forEach {
-           rendererWild(configTest)
 
-     //  }
+           workGen1(configTest)
+
+
 
 
     }

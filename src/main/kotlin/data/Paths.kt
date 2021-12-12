@@ -9,5 +9,6 @@ package data
      GROUND("assets/ground"),
      LANDTRAITS("assets/GroundCreatures"),
      CENTER("assets/center"),
-     SCATER("assets/scater")
+     SCATER("assets/scater"),
+     FlOWER("assets/Flower")
  }
