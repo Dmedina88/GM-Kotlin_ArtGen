@@ -8,26 +8,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asDesktopBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
 import data.Config
 import data.Folders
-import org.jetbrains.skia.Image
 import util.bitmapToFile
 import util.imageFromFile
 import util.scaleOnMaxHight
-import java.awt.Dimension
 import java.io.File
-import java.io.FileOutputStream
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
@@ -44,7 +34,7 @@ fun rendererWild(configTest: Config) {
             val file = directory.listFiles().random()
             //  Log.debug(file.name)
             print(file.name)
-            val random = File(Folders.LANDTRAITS.path).listFiles().random()
+            val random = File(Folders.GROUNDCREATURES.path).listFiles().random()
             //  Log.debug(file.name)
             print(random.name)
             val bitmap = imageFromFile(file)

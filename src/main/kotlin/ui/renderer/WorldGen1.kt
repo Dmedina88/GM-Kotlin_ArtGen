@@ -19,8 +19,6 @@ import util.scaleOnMaxHight
 import util.toOffSet
 import java.io.File
 import java.time.LocalDateTime
-import java.util.*
-import kotlin.math.absoluteValue
 import kotlin.math.min
 import kotlin.random.Random
 
@@ -38,7 +36,6 @@ fun workGen1(config: Config) {
 
 //backgorund
             backGroud()
-            val rand = Random(LocalDateTime.now().nano)
 
             //get items
             config.zonesWithFolders.forEach() { zoneConfig ->
@@ -94,16 +91,20 @@ fun workGen1(config: Config) {
 }
 
 private fun DrawScope.backGroud() {
-    val directory = File(Folders.SKY.path)
-    val file = directory.listFiles().random()
-    val bitmap = imageFromFile(file)
+
+
+    val sky =imageFromFile(File(Folders.SKY.path).listFiles().random())
+
     val background = imageFromFile(File(Folders.BACKGROUND.path).listFiles().random())
+    val ground = imageFromFile(File(Folders.GROUND.path).listFiles().random())
+
     this.drawImage(background, dstSize = IntSize(this.size.width.toInt(), (this.size.height).toInt()))
-    this.drawImage(
-        bitmap,
-        IntOffset(100, 100),
-        dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
+    this.drawImage(sky,  dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
     )
+
+    //should probably be max size
+    this.drawImage(ground, dstOffset = IntOffset(0,(this.size.height/2).toInt()) , dstSize = IntSize(this.size.width.toInt(), (this.size.height/2).toInt()))
+
 
 
     //   this.drawImage(randomBitmap,Offset(599f,600f))

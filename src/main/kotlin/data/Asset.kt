@@ -8,8 +8,6 @@ import kotlin.random.Random
 // the range that something can be rendered from a point
 data class Zone(val corner1 : Point , val corner2 : Point = corner1)
 
-
-
 val Zone.center get() =  Point((corner1.x +corner2.x)/2, (corner1.x +corner2.x)/2)
 
 fun Zone.randomPoint() = Point(randomX(),randomY())

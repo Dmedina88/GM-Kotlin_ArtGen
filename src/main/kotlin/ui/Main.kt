@@ -35,12 +35,13 @@ import kotlin.random.Random
 
 fun main() = application {
    Window(onCloseRequest = ::exitApplication) {
-        this.window.size = Dimension(2000, 1000)
-        this.window.isResizable = false
+       this.window.size = Dimension(2000, 1000)
+       this.window.isResizable = false
 
-           workGen1(configTest)
+       repeat(1) {
+       workGen1(configTest)
 
-
+   }
 
 
     }

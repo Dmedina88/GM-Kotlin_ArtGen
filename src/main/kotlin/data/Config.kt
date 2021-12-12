@@ -5,7 +5,6 @@ data class Config(
 
     //zones with folders
      val zonesWithFolders: List<ZoneConfig>
-
 )
 
 

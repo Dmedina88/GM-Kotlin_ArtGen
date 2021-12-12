@@ -7,7 +7,8 @@ package data
      cloads("assets/Clouds"),
      FLYING("assets/flying"),
      GROUND("assets/ground"),
-     LANDTRAITS("assets/GroundCreatures"),
+     GROUNDCREATURES("assets/GroundCreatures"),
+     LAND_TRAITS("assets/landTraits"),
      CENTER("assets/center"),
      SCATER("assets/scater"),
      FlOWER("assets/Flower")
