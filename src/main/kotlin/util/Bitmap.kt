@@ -2,16 +2,24 @@ package util
 
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntSize
-import org.jetbrains.skia.Bitmap
 
-fun ImageBitmap.scaleOnMaxHight(maxHight: Int) : IntSize{
+fun ImageBitmap.scaleOnMax(maxHight: Int = Int.MAX_VALUE , maxWidth : Int = Int.MAX_VALUE): IntSize {
+ var newSize =IntSize(width,height)
 
-    if(this.height > maxHight){
-        val rateo = this.height/maxHight
-        val newWidth = this.width/rateo
+   if (newSize.height > maxHight ) {
+        val rateo  : Double  =newSize.height  / maxHight.toDouble()
+        val newWidth = newSize.width  / rateo
 
-        return IntSize(newWidth,maxHight)
+        newSize = IntSize(newWidth.toInt(), maxHight)
     }
 
-    return IntSize(this.width,this.height)
+    if (newSize.width > maxWidth ) {
+        val rateo  : Double  = newSize.width  / maxWidth.toDouble()
+        val newHight = newSize.height / rateo
+
+        newSize = IntSize(maxWidth, newHight.toInt())
+    }
+
+
+    return newSize
 }

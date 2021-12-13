@@ -12,15 +12,16 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import data.*
+import data.Config
+import data.Folders
+import data.Variety
+import data.randomPoint
 import util.bitmapToFile
 import util.imageFromFile
-import util.scaleOnMaxHight
+import util.scaleOnMax
 import util.toOffSet
 import java.io.File
-import java.time.LocalDateTime
 import kotlin.math.min
-import kotlin.random.Random
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -38,7 +39,7 @@ fun workGen1(config: Config) {
             backGroud()
 
             //get items
-            config.zonesWithFolders.forEach() { zoneConfig ->
+            config.zonesWithFolders.forEach { zoneConfig ->
 
                 //get files as one list
                 val files = zoneConfig.folders.map { File(it.path) }.map { it.listFiles()!!.toMutableList() }.flatten()
@@ -59,10 +60,10 @@ fun workGen1(config: Config) {
                     val bitmapFile = sublist.random()
                     if (bitmapFile != null && bitmapFile.name.endsWith(".png")) {
                         val newBitmap = imageFromFile(bitmapFile)
-                      val  offset = zoneConfig.zone.randomPoint().toOffSet()
+                        val offset = zoneConfig.zone.randomPoint().toOffSet()
                         println(zoneConfig.folders.toString() + offset.toString())
 
-                        val size = newBitmap.scaleOnMaxHight(zoneConfig.maxHight)
+                        val size = newBitmap.scaleOnMax(zoneConfig.maxHight, zoneConfig.maxWidth)
                         this.drawImage(
                             newBitmap,
                             dstOffset = offset,
@@ -93,18 +94,22 @@ fun workGen1(config: Config) {
 private fun DrawScope.backGroud() {
 
 
-    val sky =imageFromFile(File(Folders.SKY.path).listFiles().random())
+    val sky = imageFromFile(File(Folders.SKY.path).listFiles().random())
 
     val background = imageFromFile(File(Folders.BACKGROUND.path).listFiles().random())
     val ground = imageFromFile(File(Folders.GROUND.path).listFiles().random())
 
     this.drawImage(background, dstSize = IntSize(this.size.width.toInt(), (this.size.height).toInt()))
-    this.drawImage(sky,  dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
+    this.drawImage(
+        sky, dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
     )
 
     //should probably be max size
-    this.drawImage(ground, dstOffset = IntOffset(0,(this.size.height/2).toInt()) , dstSize = IntSize(this.size.width.toInt(), (this.size.height/2).toInt()))
-
+    this.drawImage(
+        ground,
+        dstOffset = IntOffset(0, (this.size.height / 2).toInt()),
+        dstSize = IntSize(this.size.width.toInt(), (this.size.height / 2).toInt())
+    )
 
 
     //   this.drawImage(randomBitmap,Offset(599f,600f))

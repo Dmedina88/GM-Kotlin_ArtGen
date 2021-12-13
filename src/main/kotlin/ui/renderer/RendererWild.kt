@@ -15,7 +15,7 @@ import data.Config
 import data.Folders
 import util.bitmapToFile
 import util.imageFromFile
-import util.scaleOnMaxHight
+import util.scaleOnMax
 import java.io.File
 import java.time.LocalDateTime
 import kotlin.math.absoluteValue
@@ -27,7 +27,7 @@ import kotlin.random.Random
 @Preview()
 fun rendererWild(configTest: Config) {
 
-  val image =  ImageComposeScene(2000, 1000) {
+    val image = ImageComposeScene(2000, 1000) {
         Canvas(Modifier.fillMaxSize()) {
             val directory = File(Folders.SKY.path)
             //todo null safty
@@ -64,7 +64,7 @@ fun rendererWild(configTest: Config) {
                         println(it.name)
 
                         var newBitmap = imageFromFile(it)
- val size = newBitmap.scaleOnMaxHight(200)
+                        val size = newBitmap.scaleOnMax(200)
                         this.drawImage(
                             newBitmap,
                             dstOffset = IntOffset(
@@ -84,15 +84,14 @@ fun rendererWild(configTest: Config) {
         }
 
 
-
     }.render()
-    
+
     Canvas(Modifier.fillMaxSize()) {
         drawImage(image.toComposeImageBitmap())
     }
 
 
-    LaunchedEffect("COOL"){
+    LaunchedEffect("COOL") {
         bitmapToFile(image)
 
     }

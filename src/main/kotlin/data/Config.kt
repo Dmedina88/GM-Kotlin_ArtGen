@@ -1,10 +1,11 @@
 package data
+
 data class Config(
-    val canvisWidth : Int,
-    val canvisHight : Int,
+    val canvisWidth: Int,
+    val canvisHight: Int,
 
     //zones with folders
-     val zonesWithFolders: List<ZoneConfig>
+    val zonesWithFolders: List<ZoneConfig>
 )
 
 
