@@ -8,14 +8,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import data.Config
-import data.Folders
-import data.Variety
-import data.randomPoint
+import data.*
 import util.bitmapToFile
 import util.imageFromFile
 import util.scaleOnMax
@@ -55,39 +52,66 @@ fun workGen1(config: Config) {
                 }
 
                 //draw count
-                (0 until zoneConfig.count).forEach {
+
+                val renderData = mutableListOf<RenderData>()
+                (0 until zoneConfig.count).forEach() {
 
                     val bitmapFile = sublist.random()
                     if (bitmapFile != null && bitmapFile.name.endsWith(".png")) {
+                        //i want to move these calculatons to static fuctions fit in screen mainly
                         val newBitmap = imageFromFile(bitmapFile)
+                        val size = newBitmap.scaleOnMax(zoneConfig.maxHight, zoneConfig.maxWidth)
                         val offset = zoneConfig.zone.randomPoint().toOffSet()
+
+                        //fit to screen make function
+
+                    val newX =     if (size.width + offset.x > config.canvisWidth   ){
+                        offset.x - size.width
+                        }else offset.x
+
+                        val newY =     if (size.height + offset.y > config.canvisHight ){
+                            println(size.height + offset.y)
+                            println(offset.y - ((size.height + offset.y) - config.canvisHight ) + size.height )
+                            offset.y - ((size.height + offset.y) - config.canvisHight )
+
+                        }else offset.y
+
+
+
                         println(zoneConfig.folders.toString() + offset.toString())
 
-                        val size = newBitmap.scaleOnMax(zoneConfig.maxHight, zoneConfig.maxWidth)
-                        this.drawImage(
+                        renderData.add( RenderData(
                             newBitmap,
-                            dstOffset = offset,
+                            dstOffset = IntOffset(newX,newY),
                             dstSize = size
+                        )
                         )
                     }
 
 
                 }
 
+                // sort by x or render like wild
+                renderData.sortBy { it.dstOffset.y + it.dstSize.height}
+                renderData.forEach{ renderData ->
+                    this.drawImage(renderData.image, dstOffset = renderData.dstOffset, dstSize = renderData.dstSize, alpha = renderData.alpha)
+                }
 
             }
 
         }
     }.render()
 
-    Canvas(Modifier.fillMaxSize()) {
-        drawImage(image.toComposeImageBitmap())
-    }
+
 
 
     LaunchedEffect("COOL") {
         bitmapToFile(image)
 
+    }
+
+    Canvas(Modifier.fillMaxSize()) {
+        drawImage(image.toComposeImageBitmap())
     }
 }
 
@@ -95,7 +119,6 @@ private fun DrawScope.backGroud() {
 
 
     val sky = imageFromFile(File(Folders.SKY.path).listFiles().random())
-
     val background = imageFromFile(File(Folders.BACKGROUND.path).listFiles().random())
     val ground = imageFromFile(File(Folders.GROUND.path).listFiles().random())
 

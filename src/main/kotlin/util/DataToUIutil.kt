@@ -9,3 +9,4 @@ fun Point.toOffSet() =
         this.x,
         this.y
     )
+

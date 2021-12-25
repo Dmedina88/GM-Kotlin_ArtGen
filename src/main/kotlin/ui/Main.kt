@@ -2,7 +2,9 @@
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import data.configs.config_1
 import data.configs.config_2
+import data.configs.config_3
 import ui.renderer.workGen1
 import java.awt.Dimension
 
@@ -13,7 +15,7 @@ fun main() = application {
         this.window.isResizable = false
 
         repeat(8) {
-            workGen1(config_2)
+            workGen1(config_1)
 
         }
 
